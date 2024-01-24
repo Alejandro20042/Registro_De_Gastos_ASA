@@ -22,7 +22,7 @@ namespace Registro_De_Gastos_ASA.Datos
                     {
                         Id = Guid.NewGuid(),
                         DescripcionIngresos = parametros.DescripcionIngresos,
-                        MontoIngresos = parametros.MontoIngresos,
+                        MontoIngresos = parametros.MontoIngresos
 
 
                     }

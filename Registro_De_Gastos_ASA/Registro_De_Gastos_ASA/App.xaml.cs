@@ -12,6 +12,7 @@ namespace Registro_De_Gastos_ASA
             InitializeComponent();
 
             MainPage = new PaginaPrincipal();
+            Console.WriteLine("Chumfi was mere");
         }
 
         protected override void OnStart()
