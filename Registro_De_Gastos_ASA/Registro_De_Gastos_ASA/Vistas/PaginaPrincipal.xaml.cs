@@ -18,5 +18,6 @@ namespace Registro_De_Gastos_ASA.Vistas
             InitializeComponent();
             BindingContext = new VMpatron();
         }
+        
     }
 }

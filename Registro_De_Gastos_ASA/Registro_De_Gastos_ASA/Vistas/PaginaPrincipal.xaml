@@ -4,20 +4,39 @@
              x:Class="Registro_De_Gastos_ASA.Vistas.PaginaPrincipal">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Registro de Gastos" FontSize="Title" HorizontalOptions="CenterAndExpand" Margin="0,20,0,0"/>
 
-            <StackLayout>
-                <Label Text="Descripción del Gasto:" />
-                <Entry Placeholder="Ingrese la descripción" Text="{Binding NuevaDescripcion}" />
+            <Frame>
+                <StackLayout>
+                    <Label Text="Ingresos" FontSize="Title" HorizontalOptions="CenterAndExpand" Margin="0,20,0,0"/>
 
-                <Label Text="Monto del Gasto:" />
-                <Entry Placeholder="Ingrese el monto" Text="{Binding NuevoMonto}" />
+                    <Label Text="Descripción del Ingreso:" />
+                    <Entry Placeholder="Ingrese la descripción" Text="{Binding NuevaDescripcion}" />
 
-                <Button Text="Agregar Gasto" HorizontalOptions="CenterAndExpand" Margin="0,10,0,0" Command="{Binding AgregarGastosCommand}" />
+                    <Label Text="Cantidad de Ingreso:" />
+                    <Entry Placeholder="Ingrese el monto" Text="{Binding NuevoMonto}" />
 
-                <Label Text="{Binding UltimoGastoAgregado}" VerticalOptions="CenterAndExpand" TextColor="Green" />
-            </StackLayout>
+                    <Button Text="Ingresar Monto" HorizontalOptions="CenterAndExpand" Margin="0,10,0,0" Command="{Binding AgregarIngresosCommand}" />
 
+                    <Label Text="{Binding UltimoIngresoAgregado}" VerticalOptions="CenterAndExpand" TextColor="Green" />
+                </StackLayout>
+            </Frame>
+
+            <Frame>
+                <StackLayout>
+                    <Label Text="Registro de Gastos" FontSize="Title" HorizontalOptions="CenterAndExpand" Margin="0,20,0,0"/>
+
+                    <Label Text="Id del Retiro:" />
+                    <Entry Placeholder="Ingrese el Id" Text="{Binding IdRetiro}" />
+
+                    <Label Text="Cantidad de Retiro:" />
+                    <Entry Placeholder="Ingrese el monto" Text="{Binding MontoRetiro}" />
+
+                    <Button Text="Retirar Monto" HorizontalOptions="CenterAndExpand" Margin="0,10,0,0" Command="{Binding RetirarMontoCommand}" />
+
+                    <Label Text="{Binding UltimoRetiroAgregado}" VerticalOptions="CenterAndExpand" TextColor="Green" />
+                </StackLayout>
+            </Frame>
+            
             <ListView ItemsSource="{Binding GastosV}">
                 <ListView.ItemTemplate>
                     <DataTemplate>

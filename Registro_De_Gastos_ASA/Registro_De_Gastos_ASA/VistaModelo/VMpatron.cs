@@ -18,7 +18,7 @@ namespace Registro_De_Gastos_ASA.VistaModelo
         #endregion
 
         #region OBJETOS
-
+        
         public string UltimoGastoAgregado
         {
             get { return _ultimoGastoAgregado; }
@@ -68,7 +68,6 @@ namespace Registro_De_Gastos_ASA.VistaModelo
         #region PROCESOS
         private void AgregarGastos()
         {
-            // Obtener la descripción y el monto del gasto desde las propiedades
             string descripcionGasto = NuevaDescripcion;
             double montoGasto = NuevoMonto;
 
@@ -86,8 +85,7 @@ namespace Registro_De_Gastos_ASA.VistaModelo
                 NuevaDescripcion = string.Empty;
                 NuevoMonto = 0.0;
 
-                // Establecer la propiedad con la información del último gasto agregado
-                UltimoGastoAgregado = $"Gasto agregado: {descripcionGasto}, Monto: {montoGasto}";
+                UltimoGastoAgregado = $"Ingreso agregado: {descripcionGasto}, Monto: {montoGasto}";
             }
             else
             {
