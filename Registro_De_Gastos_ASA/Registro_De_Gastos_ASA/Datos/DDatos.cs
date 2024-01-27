@@ -42,7 +42,7 @@ namespace Registro_De_Gastos_ASA.Datos
                     }
                     );
             }
-        public async Task RetirarMonto(Guid id, double monto)
+        public async Task<string> RetirarMonto(Guid id, double monto)
         {
             var gasto = (await Cconexion.firebase
                 .Child("Gastos")
@@ -59,13 +59,18 @@ namespace Registro_De_Gastos_ASA.Datos
                         .Child("Gastos")
                         .Child(gasto.Id.ToString())
                         .PutAsync(gasto);
+
+                    return "Monto retirado correctamente";
                 }
                 else
                 {
-                    
+                    return "Fondos insuficientes para realizar el retiro";
                 }
             }
-            
+            else
+            {
+                return "No se encontró el ID de retiro";
+            }
         }
 
         public async Task<ObservableCollection<GastosModel>> MostrarGastos()

@@ -11,6 +11,7 @@ namespace Registro_De_Gastos_ASA.VistaModelo
 {
     public class VMpatron : BaseViewModel
     {
+        #region VARIABLES
         private ObservableCollection<IngresosModel> _ingresos;
         private ObservableCollection<GastosModel> _gastos;
         private string _nuevaDescripcion;
@@ -21,25 +22,22 @@ namespace Registro_De_Gastos_ASA.VistaModelo
         private string _montoRetiro;
         private string _ultimoRetiroAgregado;
         private DDatos ddDatos;
+        #endregion
 
+        #region CONSTRUCTOR
         public VMpatron()
         {
             ddDatos = new DDatos();
             _ingresos = new ObservableCollection<IngresosModel>();
             _gastos = new ObservableCollection<GastosModel>();
 
-            AgregarGastosCommand = new Command(AgregarGastos);
-            RetirarMontoCommand = new Command(async () => await RetirarMonto());
-
-            // Cargar datos iniciales al inicializar el ViewModel
+            AgregarGastosCommand = new Command(async () => await AgregarGastos());
+           // RetirarMontoCommand = new Command(async () => await RetirarMonto());
             CargarDatosIniciales();
         }
-        private async void CargarDatosIniciales()
-        {
-            IngresosV = await ddDatos.MostrarIngresos();
-            GastosV = await ddDatos.MostrarGastos();
-        }
+        #endregion
 
+        #region OBJETOS
         public string IdRetiro
         {
             get { return _idRetiro; }
@@ -93,42 +91,31 @@ namespace Registro_De_Gastos_ASA.VistaModelo
             get { return _gastos; }
             set { SetValue(ref _gastos, value); }
         }
+        #endregion
 
+        #region PROCESOS
         private async Task RetirarMonto()
         {
-            if (string.IsNullOrEmpty(IdRetiro) || string.IsNullOrEmpty(MontoRetiro))
-            {
-                UltimoRetiroAgregado = "Ingrese el Id y el monto";
-                return;
-            }
 
             if (Guid.TryParse(IdRetiro, out Guid id) && double.TryParse(MontoRetiro, out double monto))
             {
-                try
-                {
-                    // Llamar al método de retirar monto desde tu DDatos
-                    await ddDatos.RetirarMonto(id, monto);
+                string resultadoMensaje = await ddDatos.RetirarMonto(id, monto);
 
-                    // Actualizar el mensaje de éxito
-                    UltimoRetiroAgregado = "Monto retirado correctamente";
+                // Mostrar cuadro de diálogo con una marca de verificación
+                await MostrarCuadroDialogoConPalomita("Retiro exitoso", $"Monto retirado: {monto}", true);
 
-                    // Limpiar los campos después de realizar la operación
-                    IdRetiro = string.Empty;
-                    MontoRetiro = string.Empty;
-                }
-                catch (Exception ex)
-                {
-                    // Manejar cualquier excepción que pueda ocurrir durante el retiro
-                    UltimoRetiroAgregado = $"Error al retirar monto: {ex.Message}";
-                }
+                IdRetiro = string.Empty;
+                MontoRetiro = string.Empty;
             }
             else
             {
-                UltimoRetiroAgregado = "Formato de Id o monto incorrecto";
+
+                // Mostrar cuadro de diálogo con una "X"
+                await MostrarCuadroDialogoConPalomita("Error", "ID o monto incorrecto", false);
             }
         }
 
-        private void AgregarGastos()
+        private async Task AgregarGastos()
         {
             string descripcionGasto = NuevaDescripcion;
             double montoGasto = NuevoMonto;
@@ -137,6 +124,7 @@ namespace Registro_De_Gastos_ASA.VistaModelo
 
             if (!string.IsNullOrWhiteSpace(descripcionGasto) && montoGasto > 0)
             {
+                // Se hace un nuevo objeto con los valores obtenidos.
                 GastosModel nuevoGasto = new GastosModel
                 {
                     DescripcionGastos = descripcionGasto,
@@ -150,14 +138,40 @@ namespace Registro_De_Gastos_ASA.VistaModelo
                 NuevaDescripcion = string.Empty;
                 NuevoMonto = 0.0;
 
-                UltimoGastoAgregado = $"Ingreso agregado: {descripcionGasto}, Monto: {montoGasto}";
+                await MostrarDialogo("Gasto agregado", $"Descripción: {descripcionGasto}, Monto: {montoGasto}");
             }
             else
             {
                 UltimoGastoAgregado = string.Empty;
             }
         }
+        private async Task MostrarDialogo(string titulo, string mensaje)
+        {
+            // Símbolo de palomita 
+            string palomita = "\u2714";
 
+            string mensajeConPalomita = $"{palomita} {mensaje}";
+
+            await Application.Current.MainPage.DisplayAlert(titulo, mensajeConPalomita, "Aceptar");
+        }
+
+        private async Task MostrarCuadroDialogoConPalomita(string titulo, string mensaje, bool exitoso)
+        {
+            string simbolo = "\u2716";
+            string mensajeConSimbolo = $"{simbolo} {mensaje}";
+
+            await Application.Current.MainPage.DisplayAlert(titulo, mensajeConSimbolo, "Aceptar");
+        }
+
+
+        private async void CargarDatosIniciales()
+        {
+            IngresosV = await ddDatos.MostrarIngresos();
+            GastosV = await ddDatos.MostrarGastos();
+        }
+        #endregion
+
+        #region COMANDOS
         private Command _agregarGastosCommand;
         private Command _retirarMontoCommand;
 
@@ -167,16 +181,17 @@ namespace Registro_De_Gastos_ASA.VistaModelo
             set { SetValue(ref _agregarGastosCommand, value); }
         }
 
-        public ICommand AgregarGastoCommand => new Command(AgregarGastos);
-
-        public Command RetirarMontoCommand
-        {
-            get { return _retirarMontoCommand ?? (_retirarMontoCommand = new Command(async () => await RetirarMonto())); }
-            set { SetValue(ref _retirarMontoCommand, value); }
-        }
-        /****************************/
+        public ICommand AgregarGastoCommand => new Command(async () => await AgregarGastos());
+        public ICommand RetirarMontoCommand1 => new Command(async () => await RetirarMonto());
 
 
+        //public Command RetirarMontoCommand
+        //{
+        //    get { return _retirarMontoCommand ?? (_retirarMontoCommand = new Command(async () => await RetirarMonto())); }
+        //    set { SetValue(ref _retirarMontoCommand, value); }
+        //}
+
+        #endregion
 
     }
 }
