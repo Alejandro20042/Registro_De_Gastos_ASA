@@ -128,7 +128,8 @@ namespace Registro_De_Gastos_ASA.VistaModelo
                 GastosModel nuevoGasto = new GastosModel
                 {
                     DescripcionGastos = descripcionGasto,
-                    MontoGastos = montoGasto
+                    MontoGastos = montoGasto,
+                    FechaGasto = DateTime.Now
                 };
 
                 objeto.Gastos(nuevoGasto);
@@ -138,22 +139,26 @@ namespace Registro_De_Gastos_ASA.VistaModelo
                 NuevaDescripcion = string.Empty;
                 NuevoMonto = 0.0;
 
-                await MostrarDialogo("Gasto agregado", $"Descripción: {descripcionGasto}, Monto: {montoGasto}");
+                await MostrarDialogo("Gasto agregado", descripcionGasto, montoGasto, DateTime.Now);
             }
             else
             {
                 UltimoGastoAgregado = string.Empty;
             }
         }
-        private async Task MostrarDialogo(string titulo, string mensaje)
+
+        private async Task MostrarDialogo(string titulo, string descripcion, double monto, DateTime fecha)
         {
             // Símbolo de palomita 
             string palomita = "\u2714";
+
+            string mensaje = $"Descripción: {descripcion}, Monto: {monto}, Fecha: {fecha}";
 
             string mensajeConPalomita = $"{palomita} {mensaje}";
 
             await Application.Current.MainPage.DisplayAlert(titulo, mensajeConPalomita, "Aceptar");
         }
+
 
         private async Task MostrarCuadroDialogoConPalomita(string titulo, string mensaje, bool exitoso)
         {

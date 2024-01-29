@@ -9,5 +9,7 @@ namespace Registro_De_Gastos_ASA.Modelo
         public Guid Id { get; set; }
         public string DescripcionGastos { get; set; }
         public double MontoGastos { get; set; }
+        public DateTime FechaGasto { get; set; }
+
     }
 }

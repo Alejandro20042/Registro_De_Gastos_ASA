@@ -68,6 +68,8 @@
                             <StackLayout Orientation="Horizontal" Padding="10" BackgroundColor="Green">
                                 <Label Text="{Binding DescripcionGastos}" VerticalOptions="Center" TextColor="Black"/>
                                 <Label Text="{Binding MontoGastos}" VerticalOptions="Center" TextColor="Black"/>
+                                <Label Text="{Binding FechaGasto, StringFormat='{0:dd/MM/yyyy HH:mm:ss}'}" VerticalOptions="Center" TextColor="Black"/>
+
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
